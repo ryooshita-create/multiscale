@@ -1,0 +1,51 @@
+require 'date'
+
+class CLAProgram
+  attr_accessor :signatures
+
+  def initialize
+    @signatures = []
+  end
+
+  def add_signature(name)
+    signature = {
+      name: name,
+      signed_at: DateTime.now
+    }
+    @signatures << signature
+    puts "#{name} さん、CLAに署名しました。"
+  end
+
+  def display_signatures
+    if @signatures.empty?
+      puts "まだ誰も署名していません。"
+    else
+      puts "署名履歴:"
+      @signatures.each do |signature|
+        puts "#{signature[:name]} - #{signature[:signed_at]}"
+      end
+    end
+  end
+
+  def save_to_file(file_path)
+    File.open(file_path, 'w') do |file|
+      @signatures.each do |signature|
+        file.puts("#{signature[:name]},#{signature[:signed_at]}")
+      end
+    end
+    puts "署名履歴を #{file_path} に保存しました。"
+  end
+end
+
+# プログラムの実行例
+cla_program = CLAProgram.new
+
+# 署名を追加
+cla_program.add_signature("John Doe")
+cla_program.add_signature("Alice Smith")
+
+# 署名履歴を表示
+cla_program.display_signatures
+
+# ファイルに署名履歴を保存
+cla_program.save_to_file("cla_signatures.csv")
